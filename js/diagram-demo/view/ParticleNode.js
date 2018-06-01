@@ -30,8 +30,9 @@ define( function( require ) {
     } );
 
     var self = this;
-    particle.xProperty.link( function( x ) {
-      self.x = x;
+    particle.positionProperty.link( function( position ) {
+      self.x = position.x;
+      self.y = position.y;
     } );
   }
 

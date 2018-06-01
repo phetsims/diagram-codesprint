@@ -11,19 +11,17 @@ define( function( require ) {
   // modules
   var diagramDemo = require( 'DIAGRAM_DEMO/diagramDemo' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var NumberProperty = require( 'AXON/NumberProperty' );
+  var Property = require( 'AXON/Property' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   /**
    * @constructor
    */
-  function Particle( ) {
+  function Particle() {
 
     // @public
-    this.xProperty = new NumberProperty( 50 );
-    this.velocityProperty = new NumberProperty( 5 );
-
-    // @public (read-only) y is constant
-    this.y = 50;
+    this.positionProperty = new Property( new Vector2( 50, 50 ) );
+    this.velocityProperty = new Property( new Vector2( 5, 1 ) );
   }
 
   diagramDemo.register( 'Particle', Particle );
@@ -32,19 +30,31 @@ define( function( require ) {
 
     // @public
     reset: function() {
-      this.xProperty.reset();
+      this.positionProperty.reset();
       this.velocityProperty.reset();
     },
 
     // @public animate particle, changing direction at min/max x
     step: function( dt ) {
-      this.xProperty.value = this.xProperty.value + this.velocityProperty.value;
-      if ( this.xProperty.value > 1024 ) {
-        this.velocityProperty.value = -Math.abs( this.velocityProperty.value );
+
+      this.positionProperty.value = this.positionProperty.value.plus( this.velocityProperty.value );
+
+      // update x velocity
+      if ( this.positionProperty.value.x.value > 1024 ) {
+        this.velocityProperty.value.x= -Math.abs( this.velocityProperty.value.x);
       }
-      else if ( this.xProperty.value < 0 ) {
-        this.velocityProperty.value = +Math.abs( this.velocityProperty.value );
+      else if ( this.positionProperty.value.x< 0 ) {
+        this.velocityProperty.value.x= +Math.abs( this.velocityProperty.value.x);
       }
+
+      // update y velocity
+      if ( this.positionProperty.value.y> 1024 ) {
+        this.velocityProperty.value.y= -Math.abs( this.velocityProperty.value.y);
+      }
+      else if ( this.positionProperty.value.y< 0 ) {
+        this.velocityProperty.value.y= +Math.abs( this.velocityProperty.value.y);
+      }
+
     }
   } );
 } );
