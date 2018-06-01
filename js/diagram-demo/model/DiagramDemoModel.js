@@ -7,29 +7,29 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var inherit = require( 'PHET_CORE/inherit' );
   var diagramDemo = require( 'DIAGRAM_DEMO/diagramDemo' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Particle = require( 'DIAGRAM_DEMO/diagram-demo/model/Particle' );
 
   /**
    * @constructor
    */
   function DiagramDemoModel() {
-    //TODO
+    this.particle = new Particle(); // @public
   }
 
   diagramDemo.register( 'DiagramDemoModel', DiagramDemoModel );
 
   return inherit( Object, DiagramDemoModel, {
 
-    // @public resets the model
+    // @public
     reset: function() {
-      //TODO reset things here
+      this.particle.reset();
     },
 
-    //TODO Called by the animation loop. Optional, so if your model has no animation, please delete this.
-    // @public
+    // @public animate the particle
     step: function( dt ) {
-      //TODO Handle model animation here.
+      this.particle.step( dt );
     }
   } );
 } );

@@ -7,23 +7,26 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var diagramDemo = require( 'DIAGRAM_DEMO/diagramDemo' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var ParticleNode = require( 'DIAGRAM_DEMO/diagram-demo/view/ParticleNode' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
-  var diagramDemo = require( 'DIAGRAM_DEMO/diagramDemo' );
 
   /**
-   * @param {DiagramDemoModel} diagramDemoModel
+   * @param {DiagramDemoModel} model
    * @constructor
    */
-  function DiagramDemoScreenView( diagramDemoModel ) {
+  function DiagramDemoScreenView( model ) {
 
     ScreenView.call( this );
+
+    this.addChild( new ParticleNode( model.particle, 'black' ) );
 
     // Reset All button
     var resetAllButton = new ResetAllButton( {
       listener: function() {
-        diagramDemoModel.reset();
+        model.reset();
       },
       right:  this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10
@@ -33,12 +36,5 @@ define( function( require ) {
 
   diagramDemo.register( 'DiagramDemoScreenView', DiagramDemoScreenView );
 
-  return inherit( ScreenView, DiagramDemoScreenView, {
-
-    //TODO Called by the animation loop. Optional, so if your view has no animation, please delete this.
-    // @public
-    step: function( dt ) {
-      //TODO Handle view animation here.
-    }
-  } );
+  return inherit( ScreenView, DiagramDemoScreenView );
 } );
