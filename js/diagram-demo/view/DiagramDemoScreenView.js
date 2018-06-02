@@ -8,6 +8,7 @@ define( function( require ) {
 
   // modules
   var diagramDemo = require( 'DIAGRAM_DEMO/diagramDemo' );
+  var DraggableNode = require( 'DIAGRAM_DEMO/diagram-demo/view/DraggableNode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ParticleNode = require( 'DIAGRAM_DEMO/diagram-demo/view/ParticleNode' );
   var PressListener = require( 'SCENERY/listeners/PressListener' );
@@ -36,21 +37,23 @@ define( function( require ) {
     } );
     this.addChild( resetAllButton );
 
-    var rect = new Rectangle( -1000, -1000, 10000, 10000, { stroke: 'red' } );
-
     console.log( this.bounds );
-    rect.addInputListener( new PressListener( {
-      press: function( event ) {
 
-        var location = event.pointer.point;
-        model.particle.positionProperty.value = new Vector2( location.x, location.y);
-      }
-    } ) );
-    this.addChild( rect );
+
+    this.draggableNode = new DraggableNode( {
+      fill: 'blue',
+      x: 50,
+      y: 500
+    } );
+    this.addChild( this.draggableNode );
 
   }
 
   diagramDemo.register( 'DiagramDemoScreenView', DiagramDemoScreenView );
 
-  return inherit( ScreenView, DiagramDemoScreenView );
+  return inherit( ScreenView, DiagramDemoScreenView, {
+    step: function( dt ) {
+      this.draggableNode.step( dt );
+    }
+  } );
 } );

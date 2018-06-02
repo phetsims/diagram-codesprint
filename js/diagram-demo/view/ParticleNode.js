@@ -24,8 +24,8 @@ define( function( require ) {
   function ParticleNode( particle, color ) {
 
     Rectangle.call( this, -PARTICLE_SIZE / 2, 0, PARTICLE_SIZE, PARTICLE_SIZE, {
-      x: particle.x,
-      y: particle.y,
+      x: particle.positionProperty.x,
+      y: particle.positionProperty.y,
       fill: color
     } );
 
