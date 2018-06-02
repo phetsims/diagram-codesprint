@@ -10,27 +10,25 @@ define( function( require ) {
   var diagramDemo = require( 'DIAGRAM_DEMO/diagramDemo' );
   var DraggableNode = require( 'DIAGRAM_DEMO/diagram-demo/view/DraggableNode' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var ParticleNode = require( 'DIAGRAM_DEMO/diagram-demo/view/ParticleNode' );
-  var PressListener = require( 'SCENERY/listeners/PressListener' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ResetAllButton = require( 'SCENERY_PHET/buttons/ResetAllButton' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var Vector2 = require( 'DOT/Vector2' );
+
+  // constants
+  var INITIAL_POSITION = new Vector2( 50, 500 );
 
   /**
    * @param {DiagramDemoModel} model
    * @constructor
    */
   function DiagramDemoScreenView( model ) {
-
+    var self = this;
     ScreenView.call( this );
-
-    this.addChild( new ParticleNode( model.particle, 'black' ) );
 
     // Reset All button
     var resetAllButton = new ResetAllButton( {
       listener: function() {
-        model.reset();
+        self.draggableNode.center = INITIAL_POSITION;
       },
       right: this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10
@@ -42,8 +40,8 @@ define( function( require ) {
 
     this.draggableNode = new DraggableNode( {
       fill: 'blue',
-      x: 50,
-      y: 500
+      center: INITIAL_POSITION
+
     } );
     this.addChild( this.draggableNode );
 
