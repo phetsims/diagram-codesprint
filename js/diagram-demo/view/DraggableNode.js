@@ -25,7 +25,8 @@ define( function( require ) {
   function DraggableNode( options ) {
     var self = this;
     options = _.extend( {
-      fill: 'black'
+      fill: 'black',
+      cursor: 'pointer'
 
     }, options );
     Rectangle.call( this, -PARTICLE_SIZE / 2, 0, PARTICLE_SIZE, PARTICLE_SIZE, options );
@@ -43,9 +44,7 @@ define( function( require ) {
       var index = Math.floor( steppedIndex );
 
       if ( index >= 0 && index < path.length ) {
-        var currentPoint = path[ index ];
-        self.x = currentPoint.x;
-        self.y = currentPoint.y;
+        self.center = path[ index ];
       }
     } );
 
@@ -53,12 +52,14 @@ define( function( require ) {
 
     // Add a listener to record the pointer events from the mouse (or whatever)
     this.addInputListener( new PressListener( {
-      press: function() {
+      press: function( event ) {
         recording = true;
+        console.log( event.pointer.point );
+        self.center = self.globalToParentPoint( event.pointer.point );
       },
       drag: function( event ) {
         if ( recording ) {
-          path.push( event.pointer.point );
+          path.push( self.globalToParentPoint( event.pointer.point ) );
         }
       },
       release: function() {
